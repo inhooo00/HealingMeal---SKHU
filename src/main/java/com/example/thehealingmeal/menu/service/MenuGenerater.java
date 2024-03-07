@@ -210,7 +210,8 @@ public class MenuGenerater {
 
     //return filterFood MainDish
     List<String> getMainDishFilter(long user_id) {
-        FilterFood userFilter = filterFoodRepository.findFilterFoodByUserId(user_id); //유저의 필터링 내용 가져오기
+        FilterFood userFilter = filterFoodRepository.findFilterFoodByUserId(user_id)
+                .orElseThrow(); //유저의 필터링 내용 가져오기
         if (userFilter == null) {
             userFilter = FilterFood.builder()
                     .stewsAndHotpots("")
