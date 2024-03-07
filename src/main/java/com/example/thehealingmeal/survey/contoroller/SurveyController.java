@@ -16,20 +16,29 @@ import org.springframework.web.bind.annotation.*;
 public class SurveyController {
     private final SurveyService surveyService;
 
-
     public SurveyController(SurveyService surveyService) {
         this.surveyService = surveyService;
     }
+
     // 설문 저장.
+
+    /**
+     * 설문 저장
+     * @param surveyRequestDto
+     * @param userId
+     * @return
+     */
     @PostMapping("/{userId}/survey")
-    public ResponseEntity<Long> saveServey(@RequestBody SurveyRequestDto surveyRequestDto, @PathVariable Long userId) {
+    public ResponseEntity<Long> saveServey(@RequestBody SurveyRequestDto surveyRequestDto,
+                                           @PathVariable Long userId) {
         Survey survey = surveyService.submitSurvey(surveyRequestDto, userId);
         return new ResponseEntity<>(survey.getUser().getId(), HttpStatus.OK); // 해당 값을 프론트에서 보내서 filterFood 저장할 때 url로 매핑.
     }
 
     // 음식 필터 설문 저장.
     @PostMapping("/{userId}/filterFood")
-    public ResponseEntity<Long> saveFilter(@RequestBody FilterFoodRequestDto filterFoodRequestDto, @PathVariable Long userId) {
+    public ResponseEntity<Long> saveFilter(@RequestBody FilterFoodRequestDto filterFoodRequestDto,
+                                           @PathVariable Long userId) {
        FilterFood filterFood = surveyService.submitFilterFood(filterFoodRequestDto, userId);
         return new ResponseEntity<>(filterFood.getId(), HttpStatus.OK);
     }

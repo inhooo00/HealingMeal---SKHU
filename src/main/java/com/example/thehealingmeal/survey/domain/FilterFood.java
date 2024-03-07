@@ -3,17 +3,14 @@ package com.example.thehealingmeal.survey.domain;
 import com.example.thehealingmeal.member.domain.User;
 import com.example.thehealingmeal.survey.dto.FilterFoodRequestDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 public class FilterFood implements Serializable {

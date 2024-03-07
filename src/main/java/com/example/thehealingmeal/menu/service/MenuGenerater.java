@@ -292,7 +292,8 @@ public class MenuGenerater {
         }
 
 
-        RiceCategory riceCategory = riceCategoryRepository.findByRepresentativeFoodName(menu.getRice());
+        RiceCategory riceCategory = riceCategoryRepository.findByRepresentativeFoodName(menu.getRice())
+                .orElseThrow();
         User user = userRepository.findById(user_id).orElseThrow(() -> new IllegalArgumentException("User not found."));
 
         int kcal = kcalSum(mainDishCategory.getKcal(), riceCategory.getKcal(), sideDishCategories);

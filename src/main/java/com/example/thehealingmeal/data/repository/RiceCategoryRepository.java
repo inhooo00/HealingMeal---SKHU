@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface RiceCategoryRepository extends JpaRepository<RiceCategory, Long> {
     Optional<RiceCategory> findById(long id);
-    RiceCategory findByRepresentativeFoodName(String representativeFoodName);
+    Optional<RiceCategory> findByRepresentativeFoodName(String representativeFoodName);
 }

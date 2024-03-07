@@ -48,7 +48,8 @@ public class BookmarkService {
                     ( menuForUser.getMain_dish()
                             ,menuForUser.getRice()
                             ,menuForUser.getMeals()
-                            ,user);
+                            ,user)
+                .orElseThrow();
         if (existingBookmark != null) {
             throw new IllegalArgumentException("Bookmark already exists for the given user and menuForUserId");
         }
@@ -112,7 +113,8 @@ public class BookmarkService {
 
         // 이미 존재하는 snackOrTeaId인지 확인
         SnackBookmark existingSnackBookmark = snackBookmarkRepository.findDuplicateValues
-                (snackOrTea.getSnack_or_tea(), snackOrTea.getMeals());
+                (snackOrTea.getSnack_or_tea(), snackOrTea.getMeals())
+                .orElseThrow();
         if (existingSnackBookmark != null) {
             throw new IllegalArgumentException("SnackBookmark already exists for the given user and snackOrTeaId");
         }
