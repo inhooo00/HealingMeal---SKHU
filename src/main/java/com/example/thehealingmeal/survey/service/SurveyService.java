@@ -16,8 +16,6 @@ import com.example.thehealingmeal.survey.repository.SurveyResultRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.logging.Filter;
-
 import static com.example.thehealingmeal.survey.domain.FilterFood.createFilterFood;
 import static com.example.thehealingmeal.survey.domain.Survey.createSurvey;
 import static com.example.thehealingmeal.survey.domain.SurveyResult.createSurveyResult;
@@ -130,7 +128,7 @@ public class SurveyService {
 
     @Transactional
     public void filterFoodUpdateBySurveyId(Long userId, FilterFoodRequestDto filterFoodRequestDto) {
-        FilterFood filterFood = filterFoodRepository.findFilterFoodByUserId(userId);
+        FilterFood filterFood = filterFoodRepository.findFilterFoodByUserId(userId).orElseThrow(()-> new NullPointerException("fillterfood is not found."));
         filterFood.update(filterFoodRequestDto);
     }
 }
