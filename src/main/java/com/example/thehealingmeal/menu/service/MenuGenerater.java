@@ -78,15 +78,15 @@ public class MenuGenerater {
     @Async("threadPoolTaskExecutor")
     protected <T> CompletableFuture<T> getRandomMenu(JpaRepository<T, Long> repository, List<Long> randomIds, Predicate<T> filter) {
         Optional<T> optionalItem;
-        int count = 0;
         int startPoint = secureRandom.nextInt(0, 2);
+        int count;
         do {
             if (startPoint == 0) {
                 count = (randomIds.size() - 1) / secureRandom.nextInt(2, randomIds.size() - 2);
-                optionalItem = repository.findById(randomIds.get(count++));
+                optionalItem = repository.findById(randomIds.get(++count));
             } else {
                 count = randomIds.size() - secureRandom.nextInt(randomIds.size() / 3, randomIds.size() / 2);
-                optionalItem = repository.findById(randomIds.get(count--));
+                optionalItem = repository.findById(randomIds.get(--count));
             }
         } while (optionalItem.isEmpty() || filter.test(optionalItem.get()));
         return CompletableFuture.completedFuture(optionalItem.get());
@@ -130,8 +130,7 @@ public class MenuGenerater {
                 item -> filterList.contains(item.getRepresentativeFoodName())).get();
 
         // 밥 Rice
-        Optional<RiceCategory> rice1 = riceCategoryRepository.findById(secureRandom.nextInt(1, rice.size() + 1));
-        RiceCategory riceCategory = rice1.get();
+        RiceCategory riceCategory = riceCategoryRepository.findById(secureRandom.nextInt(1, rice.size() + 1)).orElseThrow(()-> new NullPointerException("not found rice data"));
 
         //반찬 2~3개 SideDishes random 2~3
         List<String> sideDishFilterList = getSideDishFilter(user_id);
@@ -212,19 +211,6 @@ public class MenuGenerater {
     List<String> getMainDishFilter(long user_id) {
         FilterFood userFilter = filterFoodRepository.findFilterFoodByUserId(user_id)
                 .orElseThrow(); //유저의 필터링 내용 가져오기
-        if (userFilter == null) {
-            userFilter = FilterFood.builder()
-                    .stewsAndHotpots("")
-                    .grilledFood("")
-                    .pancakeFood("")
-                    .vegetableFood("")
-                    .stirFriedFood("")
-                    .stewedFood("")
-                    .beveragesAndTeas("")
-                    .breadAndConfectionery("")
-                    .dairyProducts("")
-                    .build();
-        }
         return Arrays.asList((userFilter.getStewsAndHotpots() + "," + userFilter.getGrilledFood() + "," + userFilter.getPancakeFood()).split(","));
     }
 
@@ -232,19 +218,6 @@ public class MenuGenerater {
     List<String> getSideDishFilter(long user_id) {
         FilterFood userFilter = filterFoodRepository.findFilterFoodByUserId(user_id)
                 .orElseThrow(); //유저의 필터링 내용 가져오기
-        if (userFilter == null) {
-            userFilter = FilterFood.builder()
-                    .stewsAndHotpots("")
-                    .grilledFood("")
-                    .pancakeFood("")
-                    .vegetableFood("")
-                    .stirFriedFood("")
-                    .stewedFood("")
-                    .beveragesAndTeas("")
-                    .breadAndConfectionery("")
-                    .dairyProducts("")
-                    .build();
-        }
         return Arrays.asList((userFilter.getVegetableFood() + "," + userFilter.getStirFriedFood() + "," + userFilter.getStewedFood()).split(",")); //필터링 키워드
     }
 
