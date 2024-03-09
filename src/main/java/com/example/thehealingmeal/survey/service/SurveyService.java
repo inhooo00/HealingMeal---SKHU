@@ -13,6 +13,7 @@ import com.example.thehealingmeal.survey.execption.InvalidSurveyException;
 import com.example.thehealingmeal.survey.repository.FilterFoodRepository;
 import com.example.thehealingmeal.survey.repository.SurveyRepository;
 import com.example.thehealingmeal.survey.repository.SurveyResultRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,20 +23,13 @@ import static com.example.thehealingmeal.survey.domain.SurveyResult.createSurvey
 
 
 @Service
+@RequiredArgsConstructor
 public class SurveyService {
 
     private final SurveyRepository surveyRepository;
     private final FilterFoodRepository filterFoodRepository;
     private final UserRepository userRepository;
     private final SurveyResultRepository surveyResultRepository;
-
-
-    public SurveyService(SurveyRepository surveyRepository, FilterFoodRepository filterFoodRepository, UserRepository userRepository, SurveyResultRepository surveyResultRepository) {
-        this.surveyRepository = surveyRepository;
-        this.filterFoodRepository = filterFoodRepository;
-        this.userRepository = userRepository;
-        this.surveyResultRepository = surveyResultRepository;
-    }
 
     @Transactional
     public Survey submitSurvey(SurveyRequestDto surveyRequestDto, Long userId) {
