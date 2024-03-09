@@ -1,10 +1,9 @@
-package com.example.thehealingmeal.menu.api;
+package com.example.thehealingmeal.bookmark.controller;
 
-import com.example.thehealingmeal.menu.api.dto.BookmarkRequestDto;
+import com.example.thehealingmeal.bookmark.dto.BookmarkRequestDto;
+import com.example.thehealingmeal.bookmark.service.BookmarkService;
 import com.example.thehealingmeal.menu.api.dto.MenuResponseDto;
 import com.example.thehealingmeal.menu.api.dto.SnackOrTeaResponseDto;
-import com.example.thehealingmeal.menu.domain.Meals;
-import com.example.thehealingmeal.menu.service.BookmarkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

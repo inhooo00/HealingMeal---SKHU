@@ -1,8 +1,12 @@
-package com.example.thehealingmeal.menu.service;
+package com.example.thehealingmeal.bookmark.service;
 
+import com.example.thehealingmeal.bookmark.domain.Bookmark;
+import com.example.thehealingmeal.bookmark.domain.SnackBookmark;
+import com.example.thehealingmeal.bookmark.dto.BookmarkRequestDto;
+import com.example.thehealingmeal.bookmark.repository.BookmarkRepository;
+import com.example.thehealingmeal.bookmark.repository.SnackBookmarkRepository;
 import com.example.thehealingmeal.member.domain.User;
 import com.example.thehealingmeal.member.repository.UserRepository;
-import com.example.thehealingmeal.menu.api.dto.BookmarkRequestDto;
 import com.example.thehealingmeal.menu.api.dto.MenuResponseDto;
 import com.example.thehealingmeal.menu.api.dto.SnackOrTeaResponseDto;
 import com.example.thehealingmeal.menu.domain.*;

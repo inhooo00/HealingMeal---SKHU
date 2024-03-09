@@ -1,9 +1,7 @@
-package com.example.thehealingmeal.menu.domain.repository;
+package com.example.thehealingmeal.bookmark.repository;
 
-import com.example.thehealingmeal.member.domain.User;
-import com.example.thehealingmeal.menu.domain.Bookmark;
 import com.example.thehealingmeal.menu.domain.Meals;
-import com.example.thehealingmeal.menu.domain.SnackBookmark;
+import com.example.thehealingmeal.bookmark.domain.SnackBookmark;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

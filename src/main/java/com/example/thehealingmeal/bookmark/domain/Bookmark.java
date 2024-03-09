@@ -1,6 +1,7 @@
-package com.example.thehealingmeal.menu.domain;
+package com.example.thehealingmeal.bookmark.domain;
 
 import com.example.thehealingmeal.member.domain.User;
+import com.example.thehealingmeal.menu.domain.Meals;
 import jakarta.persistence.*;
 import lombok.*;
 
