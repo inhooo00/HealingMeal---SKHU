@@ -65,13 +65,6 @@ public class MenuController {
         return new ResponseEntity<>(snackOrTeaResponseDto, HttpStatus.OK);
     }
 
-    //00시 식단 초기화
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteMenu() {
-        menuManager.resetMenu();
-        return new ResponseEntity<>("Success to Reset Menu For User", HttpStatus.OK);
-    }
-
     //유저별 식단 생성 확인
     @GetMapping("/{userId}/check")
     public ResponseEntity<Boolean> checkMenu(@PathVariable Long userId) {
