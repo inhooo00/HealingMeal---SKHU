@@ -14,6 +14,7 @@ import com.example.thehealingmeal.menu.domain.repository.SnackOrTeaMenuRepositor
 import com.example.thehealingmeal.survey.domain.SurveyResult;
 import com.example.thehealingmeal.survey.repository.SurveyResultRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -155,6 +156,7 @@ public class MenuManager {
 
     //오전 00시 유저 식단 초기화 메소드
     @Transactional
+    @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
     public void resetMenu() throws RuntimeException {
         menuRepository.deleteAll();
         sideDishForUserMenuRepository.deleteAll();
