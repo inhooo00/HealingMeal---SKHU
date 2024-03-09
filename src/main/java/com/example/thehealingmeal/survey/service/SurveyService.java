@@ -93,11 +93,7 @@ public class SurveyService {
         SurveyResult surveyResult = surveyResultRepository.findSurveyResultByUser(user)
                 .orElseThrow( );
 
-        return new SurveyResultDto(
-                surveyResult.getKcal(),
-                surveyResult.getProtein(),
-                surveyResult.getCarbohydrate(),
-                surveyResult.getFat());
+        return SurveyResultDto.createSurveyResultDto(surveyResult);
     }
 
     public boolean checkingSurvey(Long userId) {
