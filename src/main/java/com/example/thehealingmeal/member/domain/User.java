@@ -3,8 +3,8 @@ package com.example.thehealingmeal.member.domain;
 import com.example.thehealingmeal.member.dto.JoinChangeDto;
 import com.example.thehealingmeal.member.execption.InvalidEmailAddressException;
 import com.example.thehealingmeal.member.execption.InvalidUserException;
-import com.example.thehealingmeal.menu.domain.Bookmark;
-import com.example.thehealingmeal.menu.domain.SnackBookmark;
+import com.example.thehealingmeal.bookmark.domain.Bookmark;
+import com.example.thehealingmeal.bookmark.domain.SnackBookmark;
 import com.example.thehealingmeal.survey.domain.FilterFood;
 import com.example.thehealingmeal.survey.domain.Survey;
 import com.example.thehealingmeal.survey.domain.SurveyResult;
@@ -14,7 +14,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
