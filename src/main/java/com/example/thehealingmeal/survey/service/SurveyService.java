@@ -2,6 +2,7 @@ package com.example.thehealingmeal.survey.service;
 
 
 import com.example.thehealingmeal.member.domain.User;
+import com.example.thehealingmeal.member.execption.EntityNotFoundException;
 import com.example.thehealingmeal.member.repository.UserRepository;
 import com.example.thehealingmeal.survey.domain.FilterFood;
 import com.example.thehealingmeal.survey.domain.Survey;
@@ -33,7 +34,9 @@ public class SurveyService {
 
     @Transactional
     public Survey submitSurvey(SurveyRequestDto surveyRequestDto, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow();
+        User user = userRepository.findById(userId)
+                .orElseThrow(()
+                        -> new EntityNotFoundException("User", userId, new Exception("User를 찾을 수 없습니다.")));
         Survey survey = createSurvey(surveyRequestDto, user);
         validateSurvey(surveyRequestDto);
         surveyRepository.save(survey);
@@ -75,7 +78,9 @@ public class SurveyService {
 
     @Transactional
     public FilterFood submitFilterFood(FilterFoodRequestDto filterFoodRequestDto, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow();
+        User user = userRepository.findById(userId)
+                .orElseThrow(()
+                        -> new EntityNotFoundException("User", userId, new Exception("User를 찾을 수 없습니다.")));
         FilterFood filterFood = createFilterFood(filterFoodRequestDto, user);
 
         return filterFoodRepository.save(filterFood);
@@ -83,9 +88,12 @@ public class SurveyService {
 
     // 설문 조사 결과
     public SurveyResultDto surveyResult(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow();
+        User user = userRepository.findById(userId)
+                .orElseThrow(()
+                        -> new EntityNotFoundException("User", userId, new Exception("User를 찾을 수 없습니다.")));
         SurveyResult surveyResult = surveyResultRepository.findSurveyResultByUser(user)
-                .orElseThrow( );
+                .orElseThrow(()
+                        -> new EntityNotFoundException("Survey", user, new Exception("SurveyResult를 찾을 수 없습니다.")));
 
         return SurveyResultDto.createSurveyResultDto(surveyResult);
     }
@@ -96,9 +104,12 @@ public class SurveyService {
 
     @Transactional
     public void surveyUpdateByUserId(Long userId, SurveyRequestDto surveyRequestDto) {
-        User user = userRepository.findById(userId).orElseThrow();
-        Survey survey = surveyRepository.findSurveyByUserId(userId).orElseThrow();
-        survey.update(surveyRequestDto);
+        User user = userRepository.findById(userId)
+                .orElseThrow(()
+                        -> new EntityNotFoundException("User", userId, new Exception("User를 찾을 수 없습니다.")));
+        Survey survey = surveyRepository.findSurveyByUserId(userId)
+                .orElseThrow(()
+                        -> new EntityNotFoundException("Survey", user, new Exception("Survey를 찾을 수 없습니다.")));        survey.update(surveyRequestDto);
 
         int kcal = Integer.parseInt(survey.getCaloriesNeededPerDay().toString());
         SurveyResult surveyResult = createSurveyResult(
@@ -110,7 +121,9 @@ public class SurveyService {
         );
 
         // 데이터베이스에서 기존의 surveyResult를 가져옴
-        SurveyResult existingSurveyResult = surveyResultRepository.findById(userId).orElseThrow();
+        SurveyResult existingSurveyResult = surveyResultRepository.findById(userId)
+                .orElseThrow(()
+                -> new EntityNotFoundException("Survey", user, new Exception("SurveyResult를 찾을 수 없습니다.")));
 
         // 기존의 surveyResult를 새로운 값으로 업데이트
         existingSurveyResult.update(surveyResult);
@@ -118,7 +131,7 @@ public class SurveyService {
 
     @Transactional
     public void filterFoodUpdateBySurveyId(Long userId, FilterFoodRequestDto filterFoodRequestDto) {
-        FilterFood filterFood = filterFoodRepository.findFilterFoodByUserId(userId).orElseThrow(()-> new NullPointerException("fillterfood is not found."));
+        FilterFood filterFood = filterFoodRepository.findFilterFoodByUserId(userId).orElseThrow(() -> new NullPointerException("fillterfood is not found."));
         filterFood.update(filterFoodRequestDto);
     }
 }
