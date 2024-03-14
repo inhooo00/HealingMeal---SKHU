@@ -17,17 +17,6 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
 
-    /*
-    apt test "/test" and "/".
-     */
-    @GetMapping("/test")
-    public ResponseEntity<String> test(Authentication authentication) {
-        return new ResponseEntity<>(authentication.getName(), HttpStatus.OK);
-    }
-    @GetMapping("/")
-    public ResponseEntity<String> index() {
-        return new ResponseEntity<>("index", HttpStatus.OK);
-    }
 
     //login confirm
     @GetMapping("/user/confirm")
