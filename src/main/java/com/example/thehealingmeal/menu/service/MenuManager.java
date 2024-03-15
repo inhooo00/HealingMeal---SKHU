@@ -14,6 +14,7 @@ import com.example.thehealingmeal.menu.domain.repository.SnackOrTeaMenuRepositor
 import com.example.thehealingmeal.survey.domain.SurveyResult;
 import com.example.thehealingmeal.survey.repository.SurveyResultRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -106,17 +107,13 @@ public class MenuManager {
         );
         Nutrient totalNutrients = nutrients.stream().reduce(Nutrient::add).orElseThrow(() ->
                 new NoSuchElementException("No Such Element Error : nutrients"));
-        System.out.println(totalNutrients.getKcal() + " "+ totalNutrients.getFat()+" "+ totalNutrients.getCarbohydrate()+" "+ totalNutrients.getProtein());
-        System.out.println((totalNutrients.getKcal() - surveyResult.getKcal() <= 100 ? 0 : totalNutrients.getKcal() - surveyResult.getKcal())+" "+ (totalNutrients.getCarbohydrate() - surveyResult.getCarbohydrate() < 0 ? 0 : totalNutrients.getCarbohydrate() - surveyResult.getCarbohydrate()) + " "+
-                (totalNutrients.getCarbohydrate() - surveyResult.getCarbohydrate() <= 20 ? 0 : totalNutrients.getCarbohydrate() - surveyResult.getCarbohydrate()) + " " +(totalNutrients.getProtein() - surveyResult.getProtein() <= 50 ? 0 : totalNutrients.getProtein() - surveyResult.getProtein()) + " "
-                + (totalNutrients.getFat() - surveyResult.getFat() <= 20 ? 0 : totalNutrients.getFat() - surveyResult.getFat()));
         Nutrient maxNutrient = Collections.max(nutrients, Comparator.comparing(Nutrient::getKcal));
         return ExceedInfo.builder()
                 .meals(maxNutrient.getMeals())
                 .kcalExceed(totalNutrients.getKcal() - surveyResult.getKcal() <= 100 ? 0 : totalNutrients.getKcal() - surveyResult.getKcal())
-                .carbohydrateExceed(totalNutrients.getCarbohydrate() - surveyResult.getCarbohydrate() <= 20 ? 0 : totalNutrients.getCarbohydrate() - surveyResult.getCarbohydrate())
-                .proteinExceed(totalNutrients.getProtein() - surveyResult.getProtein() <= 50 ? 0 : totalNutrients.getProtein() - surveyResult.getProtein())
-                .fatExceed(totalNutrients.getFat() - surveyResult.getFat() <= 20 ? 0 : totalNutrients.getFat() - surveyResult.getFat())
+                .carbohydrateExceed(totalNutrients.getCarbohydrate() - surveyResult.getCarbohydrate() <= 5 ? 0 : totalNutrients.getCarbohydrate() - surveyResult.getCarbohydrate())
+                .proteinExceed(totalNutrients.getProtein() - surveyResult.getProtein() <= 45 ? 0 : totalNutrients.getProtein() - surveyResult.getProtein())
+                .fatExceed(totalNutrients.getFat() - surveyResult.getFat() <= 5 ? 0 : totalNutrients.getFat() - surveyResult.getFat())
                 .build();
     }
 
@@ -159,6 +156,7 @@ public class MenuManager {
 
     //오전 00시 유저 식단 초기화 메소드
     @Transactional
+    @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
     public void resetMenu() throws RuntimeException {
         menuRepository.deleteAll();
         sideDishForUserMenuRepository.deleteAll();

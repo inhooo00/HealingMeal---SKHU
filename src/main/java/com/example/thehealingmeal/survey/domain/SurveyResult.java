@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
@@ -18,7 +19,8 @@ import java.io.Serializable;
 @Builder
 public class SurveyResult implements Serializable{
 
-    static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 6306251030513L;
     @Id
     @Column(name = "surveyResult_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,10 +59,10 @@ public class SurveyResult implements Serializable{
                 totalNutrients.getProtein() > getProtein() ||
                 totalNutrients.getCarbohydrate() > getCarbohydrate() ||
                 totalNutrients.getFat() > getFat()){
-            return totalNutrients.getKcal() - getKcal() > 150 &&
-                    !(totalNutrients.getProtein() - getProtein() <= 50) &&
-                    !(totalNutrients.getCarbohydrate() - getCarbohydrate() <= 30) &&
-                    !(totalNutrients.getFat() - getFat() <= 30);
+            return totalNutrients.getKcal() - getKcal() >= 100 &&
+                    totalNutrients.getProtein() - getProtein() >= 45 &&
+                    totalNutrients.getCarbohydrate() - getCarbohydrate() >= 5 &&
+                    totalNutrients.getFat() - getFat() >= 5;
         }
         return false;
     }

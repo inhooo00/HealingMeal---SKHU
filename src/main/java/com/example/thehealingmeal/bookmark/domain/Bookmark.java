@@ -1,6 +1,7 @@
-package com.example.thehealingmeal.menu.domain;
+package com.example.thehealingmeal.bookmark.domain;
 
 import com.example.thehealingmeal.member.domain.User;
+import com.example.thehealingmeal.menu.domain.Meals;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Bookmark implements Serializable {
 
-    static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 6306251030513L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

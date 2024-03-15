@@ -3,8 +3,8 @@ package com.example.thehealingmeal.member.domain;
 import com.example.thehealingmeal.member.dto.JoinChangeDto;
 import com.example.thehealingmeal.member.execption.InvalidEmailAddressException;
 import com.example.thehealingmeal.member.execption.InvalidUserException;
-import com.example.thehealingmeal.menu.domain.Bookmark;
-import com.example.thehealingmeal.menu.domain.SnackBookmark;
+import com.example.thehealingmeal.bookmark.domain.Bookmark;
+import com.example.thehealingmeal.bookmark.domain.SnackBookmark;
 import com.example.thehealingmeal.survey.domain.FilterFood;
 import com.example.thehealingmeal.survey.domain.Survey;
 import com.example.thehealingmeal.survey.domain.SurveyResult;
@@ -27,7 +27,8 @@ import java.util.regex.Pattern;
 @NoArgsConstructor
 public class User implements Serializable {
 
-    static final long serialVersionUID = 1;
+    @Serial
+    private static final long serialVersionUID = 6306251030513L;
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9._%+-]+@gmail\\.com$");
 

@@ -16,8 +16,6 @@ import com.example.thehealingmeal.survey.repository.SurveyResultRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.logging.Filter;
-
 import static com.example.thehealingmeal.survey.domain.FilterFood.createFilterFood;
 import static com.example.thehealingmeal.survey.domain.Survey.createSurvey;
 import static com.example.thehealingmeal.survey.domain.SurveyResult.createSurveyResult;
@@ -86,17 +84,20 @@ public class SurveyService {
         User user = userRepository.findById(userId).orElseThrow();
         FilterFood filterFood = createFilterFood(filterFoodRequestDto, user);
 
-        filterFoodRepository.save(filterFood);
-        return filterFood;
+        return filterFoodRepository.save(filterFood);
     }
 
     // 설문 조사 결과
     public SurveyResultDto surveyResult(Long userId) {
         User user = userRepository.findById(userId).orElseThrow();
-        SurveyResult surveyResult = surveyResultRepository.findSurveyResultByUser(user);
+        SurveyResult surveyResult = surveyResultRepository.findSurveyResultByUser(user)
+                .orElseThrow( );
 
         return new SurveyResultDto(
-                surveyResult.getKcal(), surveyResult.getProtein(), surveyResult.getCarbohydrate(), surveyResult.getFat());
+                surveyResult.getKcal(),
+                surveyResult.getProtein(),
+                surveyResult.getCarbohydrate(),
+                surveyResult.getFat());
     }
 
     public boolean checkingSurvey(Long userId) {
@@ -106,7 +107,7 @@ public class SurveyService {
     @Transactional
     public void surveyUpdateByUserId(Long userId, SurveyRequestDto surveyRequestDto) {
         User user = userRepository.findById(userId).orElseThrow();
-        Survey survey = surveyRepository.findSurveyByUserId(userId);
+        Survey survey = surveyRepository.findSurveyByUserId(userId).orElseThrow();
         survey.update(surveyRequestDto);
 
         int kcal = Integer.parseInt(survey.getCaloriesNeededPerDay().toString());
@@ -127,7 +128,7 @@ public class SurveyService {
 
     @Transactional
     public void filterFoodUpdateBySurveyId(Long userId, FilterFoodRequestDto filterFoodRequestDto) {
-        FilterFood filterFood = filterFoodRepository.findFilterFoodByUserId(userId);
+        FilterFood filterFood = filterFoodRepository.findFilterFoodByUserId(userId).orElseThrow(()-> new NullPointerException("fillterfood is not found."));
         filterFood.update(filterFoodRequestDto);
     }
 }

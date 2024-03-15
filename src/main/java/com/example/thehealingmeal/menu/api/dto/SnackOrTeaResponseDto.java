@@ -4,14 +4,11 @@ import com.example.thehealingmeal.member.domain.User;
 import com.example.thehealingmeal.menu.domain.Meals;
 import com.example.thehealingmeal.menu.domain.Nutrient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 public class SnackOrTeaResponseDto {
     private Long bookmarkId;

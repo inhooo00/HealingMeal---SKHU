@@ -7,6 +7,7 @@ import com.example.thehealingmeal.menu.domain.Meals;
 import com.example.thehealingmeal.menu.service.MenuManager;
 import com.example.thehealingmeal.menu.service.MenuProvider;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.exec.ExecutionException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +25,7 @@ public class MenuController {
         try {
             menuManager.generateForUser(userId);
             return new ResponseEntity<>("Menu Generated For User Successfully", HttpStatus.OK);
-        } catch (Exception e) {
-            System.out.print(e.getMessage());
+        } catch (InterruptedException | ExecutionException | java.util.concurrent.ExecutionException e) {
             return new ResponseEntity<>("Failed to Generate Menu For User", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -63,13 +63,6 @@ public class MenuController {
     public ResponseEntity<SnackOrTeaResponseDto> lunchSnackOrTea(@PathVariable Long userId) {
         SnackOrTeaResponseDto snackOrTeaResponseDto = menuProvider.provideSnackOrTea(userId, Meals.LUNCH_SNACKORTEA);
         return new ResponseEntity<>(snackOrTeaResponseDto, HttpStatus.OK);
-    }
-
-    //00시 식단 초기화
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteMenu() {
-        menuManager.resetMenu();
-        return new ResponseEntity<>("Success to Reset Menu For User", HttpStatus.OK);
     }
 
     //유저별 식단 생성 확인

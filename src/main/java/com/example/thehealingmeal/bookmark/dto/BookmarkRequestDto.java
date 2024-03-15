@@ -1,4 +1,4 @@
-package com.example.thehealingmeal.menu.api.dto;
+package com.example.thehealingmeal.bookmark.dto;
 
 import com.example.thehealingmeal.menu.domain.Meals;
 import lombok.AllArgsConstructor;
