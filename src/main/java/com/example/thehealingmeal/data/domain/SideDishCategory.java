@@ -26,6 +26,7 @@ public class SideDishCategory {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "food_id")
     private Food food;
+
     @Builder
     public SideDishCategory(String foodName, String foodCategory, String representativeFoodName, int kcal, float protein, float fat, float carbohydrate, float sugar, int sodium) {
         this.foodName = foodName;
