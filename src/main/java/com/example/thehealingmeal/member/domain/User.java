@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,8 @@ import java.util.regex.Pattern;
 @NoArgsConstructor
 public class User implements Serializable {
 
-    static final long serialVersionUID = 1;
+    @Serial
+    private static final long serialVersionUID = 6306251030513L;
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9._%+-]+@gmail\\.com$");
 

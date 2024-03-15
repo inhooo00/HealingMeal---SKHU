@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
@@ -18,7 +19,8 @@ import java.io.Serializable;
 @Builder
 public class SurveyResult implements Serializable{
 
-    static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 6306251030513L;
     @Id
     @Column(name = "surveyResult_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

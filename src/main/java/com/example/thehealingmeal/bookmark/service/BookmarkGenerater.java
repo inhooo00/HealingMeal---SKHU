@@ -6,23 +6,23 @@ import com.example.thehealingmeal.bookmark.dto.BookmarkRequestDto;
 import com.example.thehealingmeal.bookmark.repository.BookmarkRepository;
 import com.example.thehealingmeal.bookmark.repository.SnackBookmarkRepository;
 import com.example.thehealingmeal.member.domain.User;
-import com.example.thehealingmeal.member.execption.EntityNotFoundException;
 import com.example.thehealingmeal.member.repository.UserRepository;
-import com.example.thehealingmeal.menu.api.dto.MenuResponseDto;
-import com.example.thehealingmeal.menu.api.dto.SnackOrTeaResponseDto;
-import com.example.thehealingmeal.menu.domain.*;
-import com.example.thehealingmeal.menu.domain.repository.*;
+import com.example.thehealingmeal.menu.domain.MenuForUser;
+import com.example.thehealingmeal.menu.domain.SideDishForUserMenu;
+import com.example.thehealingmeal.menu.domain.SnackOrTea;
+import com.example.thehealingmeal.menu.domain.repository.MenuRepository;
+import com.example.thehealingmeal.menu.domain.repository.SideDishForUserMenuRepository;
+import com.example.thehealingmeal.menu.domain.repository.SnackOrTeaMenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class BookmarkService {
+public class BookmarkGenerater {
     private final UserRepository userRepository;
     private final MenuRepository menuRepository;
     private final BookmarkRepository bookmarkRepository;
@@ -36,9 +36,7 @@ public class BookmarkService {
     // 아점저 메뉴 즐겨찾기 저장
     @Transactional
     public void createMenuBookmark(Long userId, BookmarkRequestDto bookmarkRequestDto) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(()
-                        -> new EntityNotFoundException("User", userId, new Exception("User를 찾을 수 없습니다.")));
+        User user = userRepository.findById(userId).orElseThrow();
         MenuForUser menuForUser = menuRepository.findByUserAndMeals(user, bookmarkRequestDto.getMeals());
         List<SideDishForUserMenu> sideMenus = sideDishForUserMenuRepository.findAllByMenuForUser_Id(menuForUser.getId());
         List<String> sideDishNames = sideMenus.stream()
@@ -51,11 +49,11 @@ public class BookmarkService {
 
         // 이미 존재하는 menuForUserId인지 확인
         Bookmark existingBookmark = bookmarkRepository.
-                findDuplicateValues
-                        (menuForUser.getMain_dish()
-                                , menuForUser.getRice()
-                                , menuForUser.getMeals()
-                                , user)
+            findDuplicateValues
+                    ( menuForUser.getMain_dish()
+                            ,menuForUser.getRice()
+                            ,menuForUser.getMeals()
+                            ,user)
                 .orElseThrow();
         if (existingBookmark != null) {
             throw new IllegalArgumentException("Bookmark already exists for the given user and menuForUserId");
@@ -77,46 +75,10 @@ public class BookmarkService {
         bookmarkRepository.save(bookmark);
     }
 
-    // 아점저 메뉴 즐겨찾기 조회
-    public List<MenuResponseDto> menuBookmarkList(Long userId) {
-        List<Bookmark> bookmarkList = bookmarkRepository.findByUserId(userId);
-
-        List<MenuResponseDto> menuResponseDtos = new ArrayList<>(); // 반환할 값
-
-        for (Bookmark bookmark : bookmarkList) {
-            MenuResponseDto menuResponseDto = MenuResponseDto.createMenu(
-                    bookmark.getId(),
-                    bookmark.getMain_dish(),
-                    bookmark.getImageURL(),
-                    bookmark.getRice(),
-                    bookmark.getMeals(),
-                    bookmark.getSideDishForUserMenu(),
-                    bookmark.getKcal(),
-                    bookmark.getProtein(),
-                    bookmark.getCarbohydrate(),
-                    bookmark.getFat()
-            );
-            menuResponseDtos.add(menuResponseDto);
-        }
-
-        return menuResponseDtos;
-    }
-
-    // 아점저 메뉴 즐겨찾기 삭제.
-    @Transactional
-    public void deleteMenuBookmark(Long bookmarkId) {
-        Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
-                .orElseThrow(()
-                        -> new EntityNotFoundException("Bookmark", bookmarkId, new Exception("Bookmark를 찾을 수 없습니다.")));
-        bookmarkRepository.delete(bookmark);
-    }
-
-    //간식 메뉴 즐겨찾기 저장.
+     //간식 메뉴 즐겨찾기 저장.
     @Transactional
     public void createSnackBookmark(Long userId, BookmarkRequestDto requestDto) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(()
-                        -> new EntityNotFoundException("User", userId, new Exception("User를 찾을 수 없습니다.")));
+        User user = userRepository.findById(userId).orElseThrow();
         SnackOrTea snackOrTea = snackOrTeaMenuRepository.findByUserAndMeals(user, requestDto.getMeals());
         if (snackOrTea == null) {
             throw new IllegalArgumentException("SnackOrTea not found for the given user and meals");
@@ -124,7 +86,7 @@ public class BookmarkService {
 
         // 이미 존재하는 snackOrTeaId인지 확인
         SnackBookmark existingSnackBookmark = snackBookmarkRepository.findDuplicateValues
-                        (snackOrTea.getSnack_or_tea(), snackOrTea.getMeals())
+                (snackOrTea.getSnack_or_tea(), snackOrTea.getMeals())
                 .orElseThrow();
         if (existingSnackBookmark != null) {
             throw new IllegalArgumentException("SnackBookmark already exists for the given user and snackOrTeaId");
@@ -142,37 +104,5 @@ public class BookmarkService {
                 .build();
 
         snackBookmarkRepository.save(snackBookmark);
-    }
-
-    //
-//    // 간식 메뉴 즐겨찾기 조회
-    public List<SnackOrTeaResponseDto> snackBookmarkList(Long userId) {
-        List<SnackBookmark> snackBookmarkList = snackBookmarkRepository.findByUserId(userId);
-
-        List<SnackOrTeaResponseDto> snackOrTeaResponseDtos = new ArrayList<>(); // 반환할 값
-
-
-        for (SnackBookmark snackBookmark : snackBookmarkList) {
-            SnackOrTeaResponseDto snackOrTeaResponseDto = SnackOrTeaResponseDto.createMenu(
-                    snackBookmark.getId(),
-                    snackBookmark.getSnack_or_tea(),
-                    snackBookmark.getImageUrl(),
-                    snackBookmark.getMeals(),
-                    snackBookmark.getKcal(),
-                    snackBookmark.getProtein(),
-                    snackBookmark.getCarbohydrate(),
-                    snackBookmark.getFat()
-            );
-            snackOrTeaResponseDtos.add(snackOrTeaResponseDto);
-        }
-        return snackOrTeaResponseDtos;
-    }
-
-    // 간식 메뉴 즐겨찾기 삭제.
-    @Transactional
-    public void deleteSnackBookmark(Long snackBookmarkId) {
-        SnackBookmark snackBookmark = snackBookmarkRepository.findById(snackBookmarkId).orElseThrow(()
-        -> new EntityNotFoundException("SnackBookmark",snackBookmarkId,new Exception("SnackBookmark를 찾을 수 없습니다.")));
-        snackBookmarkRepository.delete(snackBookmark);
     }
 }
