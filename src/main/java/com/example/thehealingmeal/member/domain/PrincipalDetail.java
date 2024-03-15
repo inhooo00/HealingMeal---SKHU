@@ -11,7 +11,8 @@ import java.util.Collection;
 
 @Getter
 public class PrincipalDetail implements UserDetails, Serializable {
-    static final long serialVersionUID = 1;
+    @Serial
+    private static final long serialVersionUID = 6306251030513L;
     private final User user;
 
     public PrincipalDetail(User user) {
