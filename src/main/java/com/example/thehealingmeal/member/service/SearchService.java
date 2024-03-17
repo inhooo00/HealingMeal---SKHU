@@ -57,7 +57,7 @@ public class SearchService {
         if (!userRepository.existsByLoginId(userSearchDto.getLoginId())){
             throw new InvalidUserException("Not Found ID");
         }
-        String temPwd = userInfoModify.generateTemPwd(8);
+        String temPwd = userInfoModify.generateTemPwd();
         String encoded = passwordEncoder.encode(temPwd);
         User user = userRepository.findByEmail(userSearchDto.getEmail());
         user.setPassword(encoded);
