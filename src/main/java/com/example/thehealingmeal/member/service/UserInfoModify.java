@@ -27,19 +27,18 @@ public class UserInfoModify {
     public void changePwd(PwdChangeDto pwdChangeDto, String user_id) {
         User user = userRepository.findById(Long.valueOf(user_id)).orElseThrow(() -> new InvalidUserException("user not found in the user list table."));
         if (passwordEncoder.matches(pwdChangeDto.getNowPwd(), user.getPassword())) {
-            user.setPassword(passwordEncoder.encode(pwdChangeDto.getChangePwd()));
-            userRepository.save(user);
+            userRepository.updateUserPwd(Long.valueOf(user_id), passwordEncoder.encode(pwdChangeDto.getChangePwd()));
         } else {
             throw new MismatchException("the password is mismatch.");
         }
     }
 
     //임시 비밀번호 발행
-    protected String generateTemPwd(int length){
+    protected String generateTemPwd(){
 
         final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         SecureRandom random = new SecureRandom();
-        return IntStream.range(0, length)
+        return IntStream.range(0, 8)
                 .map(i -> random.nextInt(chars.length()))
                 .mapToObj(randomIndex -> String.valueOf(chars.charAt(randomIndex)))
                 .collect(Collectors.joining());
