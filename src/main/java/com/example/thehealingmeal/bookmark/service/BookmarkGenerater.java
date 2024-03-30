@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,10 +39,25 @@ public class BookmarkGenerater {
     public void createMenuBookmark(Long userId, BookmarkRequestDto bookmarkRequestDto) {
         User user = userRepository.findById(userId).orElseThrow();
         MenuForUser menuForUser = menuRepository.findByUserAndMeals(user, bookmarkRequestDto.getMeals());
+
+        // 이미 동일한 메인 요리와 밥, 식사 유형을 가진 즐겨찾기가 있는지 확인
+        Optional<Bookmark> duplicateBookmark = bookmarkRepository.findDuplicateValues(
+                menuForUser.getMain_dish(),
+                menuForUser.getRice(),
+                menuForUser.getMeals(),
+                user
+        );
+
+        if (duplicateBookmark.isPresent()) {
+            // 중복된 즐겨찾기가 존재하는 경우 예외를 발생시킵니다.
+            throw new IllegalStateException("같은 이름의 즐겨찾기가 존재합니다.");
+        }
+
         List<SideDishForUserMenu> sideMenus = sideDishForUserMenuRepository.findAllByMenuForUser_Id(menuForUser.getId());
         List<String> sideDishNames = sideMenus.stream()
                 .map(SideDishForUserMenu::getSide_dish)
                 .toList();
+
         Bookmark bookmark = Bookmark.builder()
                 .user(user)
                 .main_dish(menuForUser.getMain_dish())
@@ -58,7 +74,7 @@ public class BookmarkGenerater {
         bookmarkRepository.save(bookmark);
     }
 
-     //간식 메뉴 즐겨찾기 저장.
+    //간식 메뉴 즐겨찾기 저장.
     @Transactional
     public void createSnackBookmark(Long userId, BookmarkRequestDto requestDto) {
         User user = userRepository.findById(userId).orElseThrow();
@@ -66,8 +82,16 @@ public class BookmarkGenerater {
         if (snackOrTea == null) {
             throw new IllegalArgumentException("SnackOrTea not found for the given user and meals");
         }
+        // 이미 동일한 간식을 가진 즐겨찾기가 있는지 확인
+        Optional<SnackBookmark> duplicateBookmark = snackBookmarkRepository.findDuplicateValues(
+                snackOrTea.getSnack_or_tea(),
+                snackOrTea.getMeals()
+        );
 
-        // 이미 존재하는 snackOrTeaId인지 확인
+        if (duplicateBookmark.isPresent()) {
+            // 중복된 즐겨찾기가 존재하는 경우 예외를 발생시킵니다.
+            throw new IllegalStateException("같은 이름의 즐겨찾기가 존재합니다.");
+        }
 
         SnackBookmark snackBookmark = SnackBookmark.builder()
                 .user(user)
