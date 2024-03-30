@@ -42,23 +42,6 @@ public class BookmarkGenerater {
         List<String> sideDishNames = sideMenus.stream()
                 .map(SideDishForUserMenu::getSide_dish)
                 .toList();
-
-        if (menuForUser == null) {
-            throw new IllegalArgumentException("MenuForUser not found for the given user and meals");
-        }
-
-        // 이미 존재하는 menuForUserId인지 확인
-        Bookmark existingBookmark = bookmarkRepository.
-            findDuplicateValues
-                    ( menuForUser.getMain_dish()
-                            ,menuForUser.getRice()
-                            ,menuForUser.getMeals()
-                            ,user)
-                .orElseThrow();
-        if (existingBookmark != null) {
-            throw new IllegalArgumentException("Bookmark already exists for the given user and menuForUserId");
-        }
-
         Bookmark bookmark = Bookmark.builder()
                 .user(user)
                 .main_dish(menuForUser.getMain_dish())
@@ -85,12 +68,6 @@ public class BookmarkGenerater {
         }
 
         // 이미 존재하는 snackOrTeaId인지 확인
-        SnackBookmark existingSnackBookmark = snackBookmarkRepository.findDuplicateValues
-                (snackOrTea.getSnack_or_tea(), snackOrTea.getMeals())
-                .orElseThrow();
-        if (existingSnackBookmark != null) {
-            throw new IllegalArgumentException("SnackBookmark already exists for the given user and snackOrTeaId");
-        }
 
         SnackBookmark snackBookmark = SnackBookmark.builder()
                 .user(user)
