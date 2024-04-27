@@ -1,5 +1,6 @@
 package com.example.thehealingmeal.gpt.responseRepository;
 
+import com.example.thehealingmeal.gpt.domain.GPTResponse;
 import com.example.thehealingmeal.menu.domain.Meals;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    active: local
   mail:
     host: smtp.gmail.com
     port: ${spring.mail.port}
@@ -16,7 +14,7 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
