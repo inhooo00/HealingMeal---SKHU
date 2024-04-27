@@ -4,7 +4,7 @@
 //import com.sun.tools.javac.Main;
 //import io.github.flashvayne.chatgpt.dto.chat.MultiChatMessage;
 //import io.github.flashvayne.chatgpt.service.ChatgptService;
-//import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.controller.Test;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.core.io.ClassPathResource;
 //import org.springframework.core.io.DefaultResourceLoader;

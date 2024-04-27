@@ -1,4 +1,4 @@
-package com.example.thehealingmeal.gpt;
+package com.example.thehealingmeal.gpt.service;
 
 import com.example.thehealingmeal.gpt.dto.AiResDto;
 import com.example.thehealingmeal.menu.domain.Meals;

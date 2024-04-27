@@ -1,5 +1,7 @@
-package com.example.thehealingmeal.gpt;
+package com.example.thehealingmeal.gpt.controller;
 
+import com.example.thehealingmeal.gpt.service.GPTService;
+import com.example.thehealingmeal.gpt.service.ResponseProcessor;
 import com.example.thehealingmeal.gpt.dto.AiResDto;
 import com.example.thehealingmeal.menu.domain.Meals;
 import lombok.RequiredArgsConstructor;

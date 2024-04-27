@@ -33,14 +33,14 @@ public class UserJoinController {
         return new ResponseEntity<>("아이디가 이미 사용 중입니다.", HttpStatus.NOT_FOUND);
     }
 
-    // 회원 정보 수정 api
+    // 회원 정보 수정 controller
     @PutMapping("/{userId}/change/join")
     public ResponseEntity<String> changeJoin(@PathVariable Long userId, @RequestBody JoinChangeDto joinChangeDto) {
         userJoinService.updateByUserId(userId, joinChangeDto);
         return new ResponseEntity<>("성공", HttpStatus.OK);
     }
 
-    // 비밀번호 확인 api
+    // 비밀번호 확인 controller
     @PostMapping("{userId}/check/password")
     public ResponseEntity<String> checkingPassword(@PathVariable Long userId, @RequestBody CheckingPasswordDto checkingPasswordDto) {
         if (userJoinService.checkingPassword(userId, checkingPasswordDto)) {

@@ -1,4 +1,4 @@
-package com.example.thehealingmeal.gpt.responseRepository;
+package com.example.thehealingmeal.gpt.domain;
 
 import com.example.thehealingmeal.member.domain.User;
 import com.example.thehealingmeal.menu.domain.Meals;
